@@ -43,6 +43,13 @@
   }
   .gps-toggle-btn.gps-active{background:#2e7d32; border-color:#2e7d32; color:#fff;}
 
+  .gps-found-banner{
+    display:none; background:#0d3a24; border:1px solid #1e8a54; color:#bdf5d3;
+    border-radius:10px; padding:8px 12px; font-size:.82rem; margin:8px 0 0;
+    text-align:center; font-weight:600;
+  }
+  .gps-found-banner.show{display:block;}
+
   #textSizeControl{
     display:flex; align-items:center; justify-content:center; gap:8px;
     margin:8px auto 4px; max-width:220px;
@@ -278,6 +285,7 @@
     <span id="gpsStatusText">GPS: MANUAL</span>
     <button class="gps-toggle-btn" id="gpsToggleBtn">🛰️ ENABLE AUTO GPS</button>
   </div>
+  <div class="gps-found-banner" id="gpsFoundBanner"></div>
 
   <input type="text" class="search" id="searchBox" placeholder="Search a castle, town, or legend…">
   <div id="textSizeControl" aria-label="Text size">
@@ -1112,9 +1120,10 @@ function openRouteView(){
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function renderRoutePlaces(){
+function renderRoutePlaces(list){
   const el = document.getElementById('view-route');
   if (!el) return;
+  const items = list || routePlaces;
   const t = UI[lang];
   const rp = (item, field) => (lang === 'ru' && item[field+'Ru']) ? item[field+'Ru'] : item[field];
   el.innerHTML = `
@@ -1122,7 +1131,7 @@ function renderRoutePlaces(){
       <h3>🗺️ ${lang==='ru' ? 'ПО ПУТИ' : 'ON THE ROUTE'}</h3>
       <p>${lang==='ru' ? 'Интересные места, истории и необычные факты для рассказа, пока едет автобус — помимо самих замков.' : 'Interesting places, stories and unusual facts to use while the bus is moving — beyond the castles themselves.'}</p>
     </div>
-    ${routePlaces.map((r, i) => `
+    ${items.map((r, i) => `
       <div class="route-card">
         <div class="route-kicker">${String(i+1).padStart(2,'0')}</div>
         <h3>${rp(r,'title')}</h3>
@@ -1493,20 +1502,28 @@ document.querySelectorAll('.tab').forEach(tab => {
 
 document.getElementById('searchBox').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
+
   if (!q){
     renderCastles(castles);
     renderLegends(legendsOnly);
+    renderRoutePlaces();
     loadProgress();
     return;
   }
-  const filtered = castles.filter(c =>
-    c.name.toLowerCase().includes(q) ||
-    c.town.toLowerCase().includes(q) ||
-    c.facts.toLowerCase().includes(q) ||
-    c.legend.toLowerCase().includes(q)
+
+  const matchText = (...vals) => vals.some(v => v && v.toLowerCase().includes(q));
+
+  const filteredCastles = castles.filter(c =>
+    matchText(c.name, c.town, c.facts, c.factsRu, c.legend, c.legendRu, c.say, c.sayRu)
   );
-  renderCastles(filtered);
-  renderLegends(filtered.filter(c => c.legend && c.legend.length > 40));
+  const filteredLegends = filteredCastles.filter(c => c.legend && c.legend.length > 40);
+  const filteredRoute = routePlaces.filter(r =>
+    matchText(r.title, r.titleRu, r.place, r.text, r.textRu, r.extra, r.extraRu, r.hook, r.hookRu)
+  );
+
+  renderCastles(filteredCastles);
+  renderLegends(filteredLegends);
+  renderRoutePlaces(filteredRoute);
   loadProgress();
 });
 </script>
@@ -1615,6 +1632,23 @@ function processPosition(position) {
       if (typeof globalShowCastleFunc === 'function') {
         globalShowCastleFunc(closestIndex, true);
       }
+
+      // Видимая обратная связь: переключаемся на вкладку GUIDE и показываем баннер,
+      // иначе если гид сейчас смотрит в СПИСОК/INFO, срабатывание GPS останется незамеченным.
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const guideTab = document.querySelector('.tab[data-tab="guide"]');
+      const guideView = document.getElementById('view-guide');
+      if (guideTab) guideTab.classList.add('active');
+      if (guideView) guideView.classList.add('active');
+
+      const banner = document.getElementById('gpsFoundBanner');
+      if (banner) {
+        const distText = minDistance < 1000 ? `${Math.round(minDistance)} m` : `${(minDistance/1000).toFixed(1)} km`;
+        banner.textContent = (lang === 'ru' ? '📍 Рядом: ' : '📍 Near: ') + targetCastle.name + ` (${distText})`;
+        banner.classList.add('show');
+        setTimeout(() => banner.classList.remove('show'), 8000);
+      }
     }
   }
 }
@@ -1622,58 +1656,28 @@ function processPosition(position) {
 
 <script>
 (function(){
-  var scale = 1.0;
   var MIN = 0.8, MAX = 1.6, STEP = 0.1;
   var value = document.getElementById('textSizeValue');
+  var scale = 1.0;
+  try {
+    var saved = parseFloat(localStorage.getItem('rhineTextScale'));
+    if (isFinite(saved) && saved >= MIN && saved <= MAX) scale = saved;
+  } catch(e){}
 
-  function isExcluded(el){
-    var tag = el.tagName;
-    return tag === 'BUTTON' || tag === 'INPUT' || tag === 'SELECT' ||
-           tag === 'TEXTAREA' || tag === 'SCRIPT' || tag === 'STYLE' ||
-           el.id === 'textSizeControl';
-  }
-
-  function collect(){
-    var roots = [
-      document.getElementById('view-guide'),
-      document.getElementById('view-castles'),
-      document.getElementById('view-map'),
-      document.getElementById('view-legends'),
-      document.getElementById('view-info'),
-      document.getElementById('view-route')
-    ];
-
-    roots.forEach(function(root){
-      if(!root) return;
-      var all = root.querySelectorAll('*');
-      for(var i=0; i<all.length; i++){
-        var el = all[i];
-        if(isExcluded(el)) continue;
-        if(!el.textContent || !el.textContent.trim()) continue;
-        if(!el.hasAttribute('data-original-font-size')){
-          var fs = parseFloat(window.getComputedStyle(el).fontSize);
-          if(isFinite(fs)) el.setAttribute('data-original-font-size', fs);
-        }
-      }
-    });
-  }
-
+  // Почти вся вёрстка использует rem, поэтому масштабирование корневого
+  // font-size на <html> подхватывается каскадом для ЛЮБОГО текущего и
+  // БУДУЩЕГО контента — переживает переключение языка, поиск, переход
+  // между замками в GUIDE и т.д. Кнопки/иконки на px не меняются.
   function apply(){
-    collect();
-    var els = document.querySelectorAll('[data-original-font-size]');
-    for(var i=0; i<els.length; i++){
-      var el = els[i];
-      var base = parseFloat(el.getAttribute('data-original-font-size'));
-      if(isFinite(base)) el.style.fontSize = (base * scale) + 'px';
-    }
-    if(value) value.textContent = Math.round(scale * 100) + '%';
+    document.documentElement.style.fontSize = (scale * 100) + '%';
+    if (value) value.textContent = Math.round(scale * 100) + '%';
+    try { localStorage.setItem('rhineTextScale', String(scale)); } catch(e){}
   }
 
   document.getElementById('textSizeDown').onclick = function(){
     scale = Math.max(MIN, Math.round((scale - STEP) * 10) / 10);
     apply();
   };
-
   document.getElementById('textSizeUp').onclick = function(){
     scale = Math.min(MAX, Math.round((scale + STEP) * 10) / 10);
     apply();
