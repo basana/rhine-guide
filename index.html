@@ -471,10 +471,74 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-// Глобальные переменные объявлены в самом начале, чтобы избежать ReferenceError
+// 1. Сначала объявляем базовые переменные и локализацию, чтобы они существовали до вызовов
 let gpsActive = false;
 let watchId = null;
 let lastOpenedCastleId = null;
+let lang = localStorage.getItem('rhineLang') || 'en';
+
+const UI = {
+  en: {
+    subTitle: 'Koblenz → Bingen, English tour reference',
+    searchPlaceholder: 'Search a castle, town, or legend…',
+    tabGuide: 'GUIDE', tabCastles: 'CASTLES', tabMap: 'MAP', tabLegends: 'LEGENDS', tabInfo: 'INFO', tabRoute: 'ON THE ROUTE',
+    factsLabel: 'Facts', legendLabel: 'Legend', builtLabel: 'Built',
+    seen: 'Seen', resetBtn: 'Reset checkmarks',
+    guideKicker: 'BUS GUIDE MODE', guideSayThis: 'SAY THIS', guideStory: 'STORY', guideLegend: 'LEGEND',
+    guideMoreDetails: 'More details', guidePrev: '‹ PREVIOUS', guideNext: 'NEXT ›', guideMapBtn: 'MAP',
+    playAll: '▶ PLAY WHOLE ROUTE', stopAll: '⏹ STOP ROUTE PLAYBACK',
+    readAloud: '🔊 READ ALOUD', stopReading: '⏹ STOP',
+    selectCastle: 'Select a castle to begin.',
+    noSayLine: 'No short narration line saved for this castle.',
+    statusField: 'Status', styleField: 'Style',
+    mapDefaultTitle: 'Select a castle',
+    mapNavPrev: '‹ Previous', mapNavNext: 'Next castle ›',
+    mapStatusDefault: 'Tap a bright-red marker. Use Next castle while narrating to move along the route.',
+    mapStatusClosed: 'Tap a bright-red marker or use Next castle.',
+    mapNote: 'Touch-friendly guide map: tap a red marker for the full card. iPad landscape uses a side card; iPhone portrait uses a compact lower card.',
+    say: 'SAY',
+    gpsManual: 'GPS: MANUAL',
+    gpsActive: '🛰️ AUTO GPS ACTIVE',
+    gpsEnableBtn: '🛰️ ENABLE AUTO GPS',
+    gpsDisableBtn: '📍 DISABLE GPS',
+    gpsAcquiring: '⏳ Acquiring GPS…',
+    gpsBlocked: '⚠️ GPS Blocked by iOS (Use Manual)'
+  },
+  ru: {
+    subTitle: 'Кобленц → Бинген, справка по маршруту',
+    searchPlaceholder: 'Поиск замка, города или легенды…',
+    tabGuide: 'ГИД', tabCastles: 'ЗАМКИ', tabMap: 'КАРТА', tabLegends: 'ЛЕГЕНДЫ', tabInfo: 'ИНФО', tabRoute: 'ПО ПУТИ',
+    factsLabel: 'Факты', legendLabel: 'Легенда', builtLabel: 'Построен',
+    seen: 'Пройдено', resetBtn: 'Сбросить отметки',
+    guideKicker: 'РЕЖИМ ГИДА В АВТОБУСЕ', guideSayThis: 'СКАЖИТЕ ЭТО', guideStory: 'ИСТОРИЯ', guideLegend: 'ЛЕГЕНДА',
+    guideMoreDetails: 'Подробнее', guidePrev: '‹ НАЗАД', guideNext: 'ДАЛЕЕ ›', guideMapBtn: 'КАРТА',
+    playAll: '▶ ПРОИГРАТЬ ВЕСЬ МАРШРУТ', stopAll: '⏹ ОСТАНОВИТЬ',
+    readAloud: '🔊 ОЗВУЧИТЬ', stopReading: '⏹ СТОП',
+    selectCastle: 'Выберите замок, чтобы начать.',
+    noSayLine: 'Для этого замка нет короткой фразы.',
+    statusField: 'Статус', styleField: 'Стиль',
+    mapDefaultTitle: 'Выберите замок',
+    mapNavPrev: '‹ Назад', mapNavNext: 'Следующий замок ›',
+    mapStatusDefault: 'Нажмите на ярко-красную точку. Используйте «Следующий замок», рассказывая по пути.',
+    mapStatusClosed: 'Нажмите на ярко-красную точку или используйте «Следующий замок».',
+    mapNote: 'Удобная карта для гида: нажмите на красную точку, чтобы открыть карточку.',
+    say: 'СКАЖИТЕ',
+    gpsManual: 'GPS: РУЧНОЙ',
+    gpsActive: '🛰️ AUTO GPS АКТИВЕН',
+    gpsEnableBtn: '🛰️ ВКЛЮЧИТЬ AUTO GPS',
+    gpsDisableBtn: '📍 ОТКЛЮЧИТЬ GPS',
+    gpsAcquiring: '⏳ Получение GPS…',
+    gpsBlocked: '⚠️ GPS заблокирован iOS (Используйте ручной)'
+  }
+};
+
+function f(c, field){
+  if (lang === 'ru') {
+    const ruField = field + 'Ru';
+    if (c[ruField] !== undefined) return c[ruField];
+  }
+  return c[field];
+}
 
 const castles = [
   {
@@ -945,71 +1009,6 @@ const routePlaces = [
 
 const legendsOnly = castles.filter(c => c.legend && c.legend.length > 40);
 
-let lang = localStorage.getItem('rhineLang') || 'en';
-
-function f(c, field){
-  if (lang === 'ru') {
-    const ruField = field + 'Ru';
-    if (c[ruField] !== undefined) return c[ruField];
-  }
-  return c[field];
-}
-
-const UI = {
-  en: {
-    subTitle: 'Koblenz → Bingen, English tour reference',
-    searchPlaceholder: 'Search a castle, town, or legend…',
-    tabGuide: 'GUIDE', tabCastles: 'CASTLES', tabMap: 'MAP', tabLegends: 'LEGENDS', tabInfo: 'INFO', tabRoute: 'ON THE ROUTE',
-    factsLabel: 'Facts', legendLabel: 'Legend', builtLabel: 'Built',
-    seen: 'Seen', resetBtn: 'Reset checkmarks',
-    guideKicker: 'BUS GUIDE MODE', guideSayThis: 'SAY THIS', guideStory: 'STORY', guideLegend: 'LEGEND',
-    guideMoreDetails: 'More details', guidePrev: '‹ PREVIOUS', guideNext: 'NEXT ›', guideMapBtn: 'MAP',
-    playAll: '▶ PLAY WHOLE ROUTE', stopAll: '⏹ STOP ROUTE PLAYBACK',
-    readAloud: '🔊 READ ALOUD', stopReading: '⏹ STOP',
-    selectCastle: 'Select a castle to begin.',
-    noSayLine: 'No short narration line saved for this castle.',
-    statusField: 'Status', styleField: 'Style',
-    mapDefaultTitle: 'Select a castle',
-    mapNavPrev: '‹ Previous', mapNavNext: 'Next castle ›',
-    mapStatusDefault: 'Tap a bright-red marker. Use Next castle while narrating to move along the route.',
-    mapStatusClosed: 'Tap a bright-red marker or use Next castle.',
-    mapNote: 'Touch-friendly guide map: tap a red marker for the full card. iPad landscape uses a side card; iPhone portrait uses a compact lower card.',
-    say: 'SAY',
-    gpsManual: 'GPS: MANUAL',
-    gpsActive: '🛰️ AUTO GPS ACTIVE',
-    gpsEnableBtn: '🛰️ ENABLE AUTO GPS',
-    gpsDisableBtn: '📍 DISABLE GPS',
-    gpsAcquiring: '⏳ Acquiring GPS…',
-    gpsBlocked: '⚠️ GPS Blocked by iOS (Use Manual)'
-  },
-  ru: {
-    subTitle: 'Кобленц → Бинген, справка по маршруту',
-    searchPlaceholder: 'Поиск замка, города или легенды…',
-    tabGuide: 'ГИД', tabCastles: 'ЗАМКИ', tabMap: 'КАРТА', tabLegends: 'ЛЕГЕНДЫ', tabInfo: 'ИНФО', tabRoute: 'ПО ПУТИ',
-    factsLabel: 'Факты', legendLabel: 'Легенда', builtLabel: 'Построен',
-    seen: 'Пройдено', resetBtn: 'Сбросить отметки',
-    guideKicker: 'РЕЖИМ ГИДА В АВТОБУСЕ', guideSayThis: 'СКАЖИТЕ ЭТО', guideStory: 'ИСТОРИЯ', guideLegend: 'ЛЕГЕНДА',
-    guideMoreDetails: 'Подробнее', guidePrev: '‹ НАЗАД', guideNext: 'ДАЛЕЕ ›', guideMapBtn: 'КАРТА',
-    playAll: '▶ ПРОИГРАТЬ ВЕСЬ МАРШРУТ', stopAll: '⏹ ОСТАНОВИТЬ',
-    readAloud: '🔊 ОЗВУЧИТЬ', stopReading: '⏹ СТОП',
-    selectCastle: 'Выберите замок, чтобы начать.',
-    noSayLine: 'Для этого замка нет короткой фразы.',
-    statusField: 'Статус', styleField: 'Стиль',
-    mapDefaultTitle: 'Выберите замок',
-    mapNavPrev: '‹ Назад', mapNavNext: 'Следующий замок ›',
-    mapStatusDefault: 'Нажмите на ярко-красную точку. Используйте «Следующий замок», рассказывая по пути.',
-    mapStatusClosed: 'Нажмите на ярко-красную точку или используйте «Следующий замок».',
-    mapNote: 'Удобная карта для гида: нажмите на красную точку, чтобы открыть карточку.',
-    say: 'СКАЖИТЕ',
-    gpsManual: 'GPS: РУЧНОЙ',
-    gpsActive: '🛰️ AUTO GPS АКТИВЕН',
-    gpsEnableBtn: '🛰️ ВКЛЮЧИТЬ AUTO GPS',
-    gpsDisableBtn: '📍 ОТКЛЮЧИТЬ GPS',
-    gpsAcquiring: '⏳ Получение GPS…',
-    gpsBlocked: '⚠️ GPS заблокирован iOS (Используйте ручной)'
-  }
-};
-
 function applyStaticText(){
   const t = UI[lang];
   document.getElementById('subTitle').textContent = t.subTitle;
@@ -1373,7 +1372,6 @@ function renderGuide(index){
   document.getElementById('guideDetails').innerHTML =
     `<b>${t.statusField}:</b> ${f(c,'destroyed')}<br><b>${t.styleField}:</b> ${f(c,'style')}`;
 }
-
 
 const speakBtn = document.getElementById('speakBtn');
 const speakStatus = document.getElementById('speakStatus');
