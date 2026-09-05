@@ -416,37 +416,217 @@ const castles = [
     built: "13th c. (rebuilt 1836–42)", builtRu: "XIII век (перестроен в 1836–42)",
     destroyed: "Destroyed by the French", destroyedRu: "Разрушен французами",
     style: "Neo-Gothic / Rhine Romanticism", styleRu: "Неоготика / рейнский романтизм",
-    facts: "A castle stood here from the 1200s. Prussia rebuilt it as a grand new palace.",
-    factsRu: "Замок стоял здесь с XIII века. Пруссия построила на этом месте новый дворец.",
-    legend: "A king took an old ruin and turned it into his dream of the Middle Ages.",
-    legendRu: "Король превратил руину в свою мечту о Средневековье.",
-    say: "This castle looks medieval, but is mostly 200 years old.",
-    sayRu: "Этот замок выглядит средневековым, но ему всего 200 лет."
+    facts: "A castle stood here from the 1200s. It watched over ships on the river, and over some nearby silver mines. French soldiers destroyed it. Then, in the 1830s, Prussia rebuilt it as a grand new palace, for a future king.",
+    factsRu: "Замок стоял здесь с XIII века. Он следил за кораблями на реке и за серебряными шахтами. Французы разрушили его. Затем Пруссия отстроила его заново как дворец.",
+    legend: "This castle has no old ghost story. Its real story is more interesting: 700 years later, a king took an old ruin and turned it into his own dream of the Middle Ages.",
+    legendRu: "У этого замка нет легенды о призраках. Король превратил руину в свою мечту о Средневековье.",
+    say: "This castle looks medieval. But most of what you see is only 200 years old — built to look old.",
+    sayRu: "Этот замок выглядит средневековым. Но почти всё здесь построено 200 лет назад."
   },
   {
     id: "lahneck", lat: 50.3065479, lng: 7.6123627,
     name: "Burg Lahneck", town: "Lahnstein", pop: "~18,000",
     built: "13th century", builtRu: "XIII век",
-    destroyed: "Destroyed by the French", destroyedRu: "Разрушен французами",
+    destroyed: "Destroyed by the French (1689 / 1794)", destroyedRu: "Разрушен французами (1689 и 1794)",
     style: "Rebuilt 19th century", styleRu: "Восстановлен в XIX веке",
-    facts: "Built where the Lahn meets the Rhine.", factsRu: "Построен у впадения Лана в Рейн.",
-    legend: "Knights Templar allegedly hid here.", legendRu: "Легенда о тамплиерах.",
+    facts: "Built in the 1200s, right where the small river Lahn meets the Rhine. French troops destroyed it — first in 1689, and again in 1794.",
+    factsRu: "Построен в XIII веке в месте слияния рек Лан и Рейн. Французы разрушили его дважды.",
+    legend: "People say that Knights Templar hid here long ago, after their order was shut down. It's a nice story — but historians can't prove it really happened.",
+    legendRu: "Говорят, здесь прятались тамплиеры, но историки не могут это доказать.",
     say: "", sayRu: ""
   },
   {
     id: "marksburg", lat: 50.2720119, lng: 7.64926,
     name: "Marksburg", town: "Braubach", pop: "~3,000",
     built: "c. 1231", builtRu: "около 1231 года",
-    destroyed: "Never destroyed", destroyedRu: "Никогда не разрушался",
-    style: "Genuine medieval", styleRu: "Настоящее средневековое здание",
-    facts: "The only castle on the Rhine never destroyed.", factsRu: "Единственный неразрушенный замок.",
-    legend: "Named after Saint Mark in the 1400s.", legendRu: "Назван в честь св. Марка.",
-    say: "This is what all castles looked like before the wars.", sayRu: "Так выглядели все замки до войн."
+    destroyed: "Never destroyed", destroyedRu: "Никогда не был разрушен",
+    style: "Genuine medieval, layered additions", styleRu: "Настоящее средневековое здание",
+    facts: "This is the only castle on the whole Rhine that was never destroyed. Building started around 1231. Over hundreds of years, people kept adding new parts to it.",
+    factsRu: "Единственный замок на Рейне, который никогда не был разрушен. Строился с 1231 года.",
+    legend: "It only got the name 'Marksburg' much later, in the 1400s, when a chapel to Saint Mark was added.",
+    legendRu: "Название появилось в XV веке после добавления часовни святого Марка.",
+    say: "Look at this one carefully. This is what all the other castles looked like — before the French came.",
+    sayRu: "Посмотрите внимательно: так выглядели все замки до прихода французских войск."
+  },
+  {
+    id: "rheinfels", lat: 50.1544865, lng: 7.704412,
+    name: "Burg Rheinfels", town: "St. Goar", pop: "~2,900",
+    built: "1245", builtRu: "1245 год",
+    destroyed: "Destroyed by the French (1794–97)", destroyedRu: "Разрушен французами (1794–97)",
+    style: "Largest ruin in the valley", styleRu: "Самая большая руина в долине",
+    facts: "Built in 1245 to collect tolls from ships. It grew into the biggest fortress on the whole Rhine.",
+    factsRu: "Построен в 1245 году для сбора пошлин. Вырос в крупнейшую крепость на Рейне.",
+    legend: "In 1692, it held out against 28,000 French soldiers — an amazing defense for its time.",
+    legendRu: "В 1692 году выдержал осаду 28 тысяч солдат.",
+    say: "", sayRu: ""
+  },
+  {
+    id: "katz", lat: 50.1519634, lng: 7.7242583,
+    name: "Burg Katz (\"Cat Castle\")", town: "St. Goarshausen", pop: "~1,300",
+    built: "1371", builtRu: "1371 год",
+    destroyed: "Blown up by Napoleon (1806)", destroyedRu: "Взорван Наполеоном (1806)",
+    style: "Rebuilt c. 1896", styleRu: "Восстановлен около 1896 года",
+    facts: "Built in 1371, to protect the local toll and to challenge a rival castle nearby. Napoleon had it blown up in 1806.",
+    factsRu: "Построен в 1371 году для защиты пошлин и борьбы с соперниками. Наполеон приказал взорвать его.",
+    legend: "People nicknamed it 'the Cat.' Just across the valley stood 'the Mouse' — a rival castle.",
+    legendRu: "Прозван «Котом», а напротив стоял замок «Мышь».",
+    say: "", sayRu: ""
+  },
+  {
+    id: "maus", lat: 50.1719014, lng: 7.695775,
+    name: "Burg Maus (\"Mouse Castle\")", town: "Wellmich / St. Goarshausen", pop: "—",
+    built: "1356 (started)", builtRu: "начат в 1356 году",
+    destroyed: "Never destroyed", destroyedRu: "Никогда не был разрушен",
+    style: "Fell into disrepair, restored 1900–06", styleRu: "Восстановлен в 1900–06",
+    facts: "Building started in 1356 by an archbishop to protect river tolls against the Cat castle.",
+    factsRu: "Строительство началось в 1356 году архиепископом для защиты пошлин.",
+    legend: "Local people joked that the 'cat' castle would one day eat the 'mouse' castle.",
+    legendRu: "Шутили, что «Кот» когда-нибудь съест «Мышь».",
+    say: "Unlike its 'cat' rival across the valley, the mouse was never actually destroyed.",
+    sayRu: "В отличие от «Кота», «Мышь» никогда не была разрушена."
+  },
+  {
+    id: "loreley", lat: 50.1391667, lng: 7.7280556,
+    name: "The Loreley Rock", town: "St. Goarshausen", pop: "—",
+    built: "Natural rock; legend from 1801", builtRu: "природная скала; легенда — с 1801 года",
+    destroyed: "—", destroyedRu: "—",
+    style: "132 m slate cliff", styleRu: "Сланцевая скала высотой 132 метра",
+    facts: "A steep rock sitting at the narrowest point of the whole Rhine, known for real shipwrecks caused by strong currents.",
+    factsRu: "Крутая скала в самом узком месте Рейна, где из-за течения случались кораблекрушения.",
+    legend: "In 1801, writer Clemens Brentano invented the legend of the siren who lures sailors with her song.",
+    legendRu: "В 1801 году Клеменс Брентано придумал легенду о сирене, манящей моряков пением.",
+    say: "This famous story is only 200 years old. But the danger underneath it was very real.",
+    sayRu: "Этой истории всего 200 лет, но опасность была вполне реальной."
+  },
+  {
+    id: "reichenstein", lat: 50.0064884, lng: 7.8529685,
+    name: "Burg Reichenstein", town: "Trechtingshausen", pop: "~1,500",
+    built: "11th–13th c.", builtRu: "XI–XIII века",
+    destroyed: "Destroyed 1253 and again 1282", destroyedRu: "Разрушен в 1253 и 1282 годах",
+    style: "Rebuilt 1899–1902, neo-Gothic", styleRu: "Восстановлен в 1899–1902",
+    facts: "Home to robber knights who stopped ships. The emperor destroyed it in 1282 to stop them.",
+    factsRu: "Прибежище рыцарей-разбойников. Император разрушил его в 1282 году.",
+    legend: "The ghost of the last robber knight is said to haunt the castle after his execution.",
+    legendRu: "Легенда о призраке последнего рыцаря-разбойника.",
+    say: "", sayRu: ""
+  },
+  {
+    id: "rheinstein", lat: 49.9935693, lng: 7.8583103,
+    name: "Burg Rheinstein", town: "Trechtingshausen", pop: "~1,500",
+    built: "c. 1282–1329", builtRu: "около 1282–1329 годов",
+    destroyed: "Fell into disrepair", destroyedRu: "Обветшал",
+    style: "First Romantic rebuild, from 1825", styleRu: "Первый романтический замок",
+    facts: "A toll station that fell apart, then bought in 1823 by a Prussian prince to be rebuilt romantically.",
+    factsRu: "Таможенный пост, который восстановил прусский принц в 1823 году.",
+    legend: "Queen Victoria of England stayed here as a guest.",
+    legendRu: "Здесь останавливалась британская королева Виктория.",
+    say: "This is where it all started — the very first ruin a prince decided to rebuild as a fairy-tale castle.",
+    sayRu: "Отсюда всё началось — первая руина, превращенная в сказочный замок."
+  },
+  {
+    id: "sooneck", lat: 50.019453, lng: 7.8248973,
+    name: "Burg Sooneck", town: "Niederheimbach", pop: "~750",
+    built: "11th–12th c.", builtRu: "XI–XII века",
+    destroyed: "Destroyed 1282, again 1689", destroyedRu: "Разрушен в 1282 и 1689 годах",
+    style: "Restored 1843", styleRu: "Восстановлен в 1843",
+    facts: "Another robber-knight castle destroyed in 1282 and 1689, restored simply in 1842 by Prussia.",
+    factsRu: "Еще один замок разбойников, восстановленный Пруссией в 1842 году.",
+    legend: "Shares the dramatic history of river piracy and imperial crackdowns.",
+    legendRu: "Разделяет историю речного пиратства.",
+    say: "", sayRu: ""
+  },
+  {
+    id: "gutenfels", lat: 50.0879075, lng: 7.7658988,
+    name: "Burg Gutenfels", town: "Kaub", pop: "~1,000",
+    built: "1222", builtRu: "1222 год",
+    destroyed: "Partly demolished by Napoleon (1806–07)", destroyedRu: "Частично снесен Наполеоном",
+    style: "Rebuilt 1889–92", styleRu: "Восстановлен в 1889–92",
+    facts: "Built in 1222 to guard the river toll alongside Pfalzgrafenstein.",
+    factsRu: "Построен в 1222 году для охраны пошлин вместе с Пфальцграфенштайном.",
+    legend: "A romantic tale tells of a count's sister and a mystery knight winning a tournament.",
+    legendRu: "Романтическая легенда о турнире и тайном рыцаре.",
+    say: "", sayRu: ""
+  },
+  {
+    id: "pfalzgrafenstein", lat: 50.0831239, lng: 7.7655246,
+    name: "Pfalzgrafenstein", town: "Kaub (river island)", pop: "—",
+    built: "From 1326", builtRu: "с 1326 года",
+    destroyed: "Never seriously destroyed", destroyedRu: "Никогда не разрушался",
+    style: "Ship-shaped toll castle on an island", styleRu: "Замок в форме корабля на острове",
+    facts: "Built on a small island in the river exclusively to collect tolls from passing ships.",
+    factsRu: "Построен на острове посреди реки исключительно для сбора пошлин.",
+    legend: "Stories say noble women came here to give birth, though it was only a toll station.",
+    legendRu: "Легенды о рождении здесь знатных детей.",
+    say: "A castle sitting right in the middle of the river — just to collect money from passing ships.",
+    sayRu: "Замок посреди реки — только для сбора денег с кораблей."
+  },
+  {
+    id: "stahleck", lat: 50.0581089, lng: 7.7657011,
+    name: "Burg Stahleck", town: "Bacharach", pop: "~1,850",
+    built: "12th century", builtRu: "XII век",
+    destroyed: "Destroyed by the French (1689)", destroyedRu: "Разрушен французами (1689)",
+    style: "Rebuilt 1925–38 as a youth hostel", styleRu: "Восстановлен как общежитие",
+    facts: "Built in the 1100s, destroyed in 1689, and rebuilt in the 1920s as a youth hostel.",
+    factsRu: "Построен в XII веке, разрушен в 1689-м, в 1920-х восстановлен как хостел.",
+    legend: "Site of a grand 1194 wedding that ended a bitter noble feud.",
+    legendRu: "Место свадьбы 1194 года, примирившей враждовaвшие роды.",
+    say: "", sayRu: ""
+  },
+  {
+    id: "maeuseturm", lat: 49.9720141, lng: 7.8804018,
+    name: "Mäuseturm (Mouse Tower)", town: "Bingen", pop: "~26,000",
+    built: "Toll tower from 1298", builtRu: "таможенная башня с 1298 года",
+    destroyed: "Destroyed by the French (1689)", destroyedRu: "Разрушен французами (1689)",
+    style: "Rebuilt 1855, neo-Gothic", styleRu: "Восстановлен в 1855 году",
+    facts: "A small toll tower on an island, rebuilt in 1855.",
+    factsRu: "Маленькая таможенная башня на острове, восстановленная в 1855 году.",
+    legend: "Legend says a cruel bishop was eaten alive here by an army of mice.",
+    legendRu: "Легенда о злом епископе, съеденном мышами.",
+    say: "A cruel bishop, a famine, and an army of angry mice — Germany's other great Rhine legend.",
+    sayRu: "Жестокий епископ и армия мышей — вторая великая легенда."
+  },
+  {
+    id: "hildegard", lat: 49.9924372, lng: 7.9283458,
+    name: "Abbey of St. Hildegard", town: "Eibingen, near Rüdesheim", pop: "—",
+    built: "Founded 1165", builtRu: "основан в 1165 году",
+    destroyed: "—", destroyedRu: "—",
+    style: "Benedictine convent, active today", styleRu: "Бенедиктинский монастырь",
+    facts: "Convent where Hildegard von Bingen lived in the 1100s as a writer, composer and doctor.",
+    factsRu: "Монастырь, где жила Хильдегарда Бингенская — монахиня, врач и композитор.",
+    legend: "Named a Doctor of the Church in 2012; visions were reported since childhood.",
+    legendRu: "В 2012 году объявлена Учителем Церкви из-за ее видений.",
+    say: "A nun, a doctor, a composer, and a visionary — all in one woman, right here on the Rhine.",
+    sayRu: "Монахиня, врач, композитор и провидица — всё в одной женщине."
+  },
+  {
+    id: "bromserburg", lat: 49.9776596, lng: 7.9177834,
+    name: "Bromserburg", town: "Rüdesheim am Rhein", pop: "~10,000",
+    built: "1210", builtRu: "1210 год",
+    destroyed: "—", destroyedRu: "—",
+    style: "Oldest building in Rüdesheim, wine museum", styleRu: "Старейшее здание, музей вина",
+    facts: "The oldest building in Rüdesheim, now serving as a wine museum at the route's end.",
+    factsRu: "Старейшее здание Рюдесхайма, ныне музей вина в конце маршрута.",
+    legend: "Its story is the history of Rüdesheim growing into a famous wine town.",
+    legendRu: "Его история — это история превращения Рюдесхайма в винную столицу.",
+    say: "", sayRu: ""
   }
 ];
 
 const routePlaces = [
-  { title: "Koblenz", place: "Deutsches Eck", text: "Confluence of Rhine and Moselle.", extra: "Kaiser Wilhelm monument.", hook: "Two rivers, one point." }
+  { title: "Koblenz — where two rivers meet", place: "Koblenz / Deutsches Eck", text: "The journey begins at the confluence of the Rhine and Moselle. The name Koblenz goes back to the Roman name Castellum apud Confluentes.", extra: "Kaiser Wilhelm monument inaugurated in 1897.", hook: "Two rivers, one strategic point." },
+  { title: "Stolzenfels — Rhine Romanticism", place: "Koblenz", text: "A medieval ruin transformed into a 19th-century royal vision of the Middle Ages.", extra: "Prussian Crown Prince Friedrich Wilhelm rebuilt it.", hook: "A 19th-century fantasy of the Middle Ages." },
+  { title: "Lahnstein — river meeting", place: "Lahnstein", text: "Where the Lahn meets the Rhine, controlling river traffic.", extra: "Connected with Templar legends.", hook: "Two rivers meet, controlling traffic." },
+  { title: "Braubach & Marksburg", place: "Braubach", text: "A genuine medieval town under the only un-destroyed castle.", extra: "Marksburg survived all wars.", hook: "A genuine medieval survivor." },
+  { title: "Boppard — Roman walls", place: "Boppard", text: "Important 4th-century Roman fortress site with extensive history and wine culture.", extra: "Bopparder Hamm is a massive vineyard.", hook: "A town whose shape still remembers Rome." },
+  { title: "St. Goar — Rheinfels Fortress", place: "St. Goar", text: "The largest fortress complex, resisting French attacks.", extra: "Abandoned and dismantled in 1794.", hook: "The fortress that survived armies." },
+  { title: "St. Goarshausen — Cat and Mouse", place: "St. Goarshausen", text: "Rival toll castles telling a political story.", extra: "Katz and Maus rivalry.", hook: "A real-world political game." },
+  { title: "Loreley Rock", place: "Loreley", text: "132 m slate cliff at the narrowest bend.", extra: "Famous siren poem by Heinrich Heine.", hook: "One rock, one murmur, a famous legend." },
+  { title: "Oberwesel — medieval walls", place: "Oberwesel", text: "Walls, towers, and steep terraced vineyards.", extra: "Part of the UNESCO landscape.", hook: "The town, walls and vineyards together." },
+  { title: "Bacharach — Victor Hugo's favorite", place: "Bacharach", text: "Named after Bacchus, visited by Victor Hugo in 1839.", extra: "Ancient wine trading town.", hook: "The oldest town Victor Hugo ever saw." },
+  { title: "Kaub & Pfalzgrafenstein", place: "Kaub", text: "Working river town and ship-shaped toll island castle.", extra: "Crossing of Field Marshal Blücher.", hook: "A toll castle sitting in the middle of the Rhine." },
+  { title: "Trechtingshausen & ruins", place: "Trechtingshausen", text: "Reichenstein, Rheinstein, and Sooneck cluster.", extra: "Robber-knight legends.", hook: "Three different faces of the ruin." },
+  { title: "Bingen & Mäuseturm", place: "Bingen", text: "Gateway to the gorge where Rhine meets Nahe.", extra: "Historic toll tower and bishop legend.", hook: "The mice are legend. The tolls were real." },
+  { title: "Rüdesheim — wine and tourism", place: "Rüdesheim", text: "Famous wine town and mechanical music cabinet.", extra: "The end of our route.", hook: "Where medieval wine meets tourism." }
 ];
 
 const legendsOnly = castles.filter(c => c.legend && c.legend.length > 20);
@@ -874,7 +1054,6 @@ applyStaticText();
 const openRouteFromInfo = document.getElementById('openRouteFromInfo');
 if (openRouteFromInfo) openRouteFromInfo.addEventListener('click', openRouteView);
 
-// Безопасное переключение вкладок
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
