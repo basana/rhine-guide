@@ -1094,25 +1094,33 @@ if(searchBox) {
   var downBtn = document.getElementById('textSizeDown');
   var upBtn = document.getElementById('textSizeUp');
 
-  function apply(){
-    var els = document.querySelectorAll('.guide-card, .castle-card, .info-card, .route-card');
-    for(var i=0; i<els.length; i++){
-      els[i].style.fontSize = (scale * 100) + '%';
-    }
+  function applyTextScale(){
+    // Применяем масштабирование ко всем текстовым элементам на странице
+    var elements = document.querySelectorAll('body, h1, h2, h3, h4, p, span, td, th, .tab, .guide-say, .castle-name');
+    elements.forEach(function(el){
+      if(!el.hasAttribute('data-base-font')){
+        var fs = parseFloat(window.getComputedStyle(el).fontSize);
+        if(isFinite(fs)) el.setAttribute('data-base-font', fs);
+      }
+      var base = parseFloat(el.getAttribute('data-base-font'));
+      if(isFinite(base)){
+        el.style.fontSize = (base * scale) + 'px';
+      }
+    });
     if(value) value.textContent = Math.round(scale * 100) + '%';
   }
 
-  if(downBtn) {
+  if(downBtn){
     downBtn.onclick = function(){
       scale = Math.max(MIN, Math.round((scale - STEP) * 10) / 10);
-      apply();
+      applyTextScale();
     };
   }
 
-  if(upBtn) {
+  if(upBtn){
     upBtn.onclick = function(){
       scale = Math.min(MAX, Math.round((scale + STEP) * 10) / 10);
-      apply();
+      applyTextScale();
     };
   }
 })();
