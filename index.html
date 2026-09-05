@@ -471,6 +471,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
+// Глобальные переменные объявлены в самом начале, чтобы избежать ReferenceError
+let gpsActive = false;
+let watchId = null;
+let lastOpenedCastleId = null;
+
 const castles = [
   {
     id: "stolzenfels",
@@ -931,7 +936,7 @@ const routePlaces = [
     place: "Upper Middle Rhine Valley",
     text: "In 2002, UNESCO named this stretch a World Heritage Site: the Upper Middle Rhine Valley, from Bingen and Rüdesheim all the way to Koblenz — about 65 kilometers. Inside that stretch: around 60 small towns and villages, about 40 castles and fortresses, and steep terraced vineyards that cling to the slopes.",
     textRu: "В 2002 году ЮНЕСКО присвоило этому участку статус объекта Всемирного наследия: Верхняя долина Среднего Рейна, от Бингена и Рюдесхайма до Кобленца — около 65 километров. На этом отрезке: около 60 маленьких городов и деревень, около 40 замков и крепостей, и крутые террасные виноградники, цепляющиеся за склоны.",
-    extra: "UNESCO's point is simple: the value isn't any single castle. It's the whole cultural landscape together — river, towns, vineyards, castles, transport, history and legends, all at once. The vineyards on these steep slopes are over a thousand years old. Most castles were built across roughly a thousand years too, then ruined by 17th-century wars, then reimagined by 18th- and 19th-century Romanticism into the valley we see today. And through all of it, the Rhine has stayed one of Europe's most important transport routes, linking north and south for centuries.",
+    extra: "UNESCO's point is simple: the value isn't any single castle. It's the whole cultural landscape together — river, towns, vineyards, castles, transport, history and legends, all at once. The vineyards on these steep slopes are over a thousand years old. Most castles were built across roughly a thousand years too, then ruined by 17th-century wars, then reimagined by 18th- and 19th-century Romanticism into the valley we see today. And through all of it, the Rhine has stayed one of Europe's important transport routes, linking north and south for centuries.",
     extraRu: "Идея ЮНЕСКО проста: ценность не в каком-то одном замке. Ценность — во всём культурном ландшафте сразу: река, города, виноградники, замки, транспорт, история и легенды — всё вместе. Виноградникам на этих крутых склонах больше тысячи лет. Большинству замков — примерно столько же, потом их разрушили войны XVII века, а потом романтизм XVIII–XIX веков заново придумал их такими, какими мы видим долину сегодня. И через всё это время Рейн остаётся одним из важнейших транспортных путей Европы, веками связывающим север и юг.",
     hook: "It's not a list of castles. It's one continuous landscape — and that's exactly what UNESCO decided to protect.",
     hookRu: "Это не список замков. Это единый, цельный ландшафт — и именно его решило защитить ЮНЕСКО."
@@ -1398,13 +1403,6 @@ function speakCurrent(){
     return;
   }
 
-  // Принудительная разблокировка аудиовыхода на iOS (перенаправление в наушники)
-  if ('speechSynthesis' in window) {
-    const dummy = new SpeechSynthesisUtterance('');
-    dummy.volume = 0;
-    window.speechSynthesis.speak(dummy);
-  }
-
   if (window.speechSynthesis.speaking) {
     stopSpeaking();
     return;
@@ -1542,12 +1540,8 @@ document.getElementById('searchBox').addEventListener('input', (e) => {
 });
 </script>
 
-<!-- Надежная логика GPS с защитой от iOS-багов -->
+<!-- Логика GPS -->
 <script>
-let gpsActive = false;
-let watchId = null;
-let lastOpenedCastleId = null;
-
 function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
   var R = 6371000;
   var dLat = deg2rad(lat2 - lat1);
@@ -1663,7 +1657,7 @@ function processPosition(position) {
 }
 </script>
 
-<!-- Надежное масштабирование шрифта для ВСЕХ текстов повсюду -->
+<!-- Масштабирование шрифта -->
 <script>
 (function(){
   var MIN = 0.8, MAX = 1.6, STEP = 0.1;
